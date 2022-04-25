@@ -14,12 +14,16 @@ public class MarkdownParse {
         // find the next [, then find the ], then find the (, then read link upto next )
         int currentIndex = 0;
         while(currentIndex < markdown.length()) {
-            int openBracket = markdown.indexOf("[", currentIndex);
-            int closeBracket = markdown.indexOf("]", openBracket);
-            int openParen = markdown.indexOf("(", closeBracket);
-            int closeParen = markdown.indexOf(")", openParen);
-            toReturn.add(markdown.substring(openParen + 1, closeParen));
-            currentIndex = closeParen + 1;
+            int openParen1 = markdown.indexOf("(", currentIndex);
+            int closeParen1 = markdown.indexOf(")", openParen1);
+            int OpenParen2 = markdown.indexOf("(", closeParen1);
+            int closeParen2 = markdown.indexOf(")", OpenParen2);
+            int OpenParen3 = markdown.indexOf("(", closeParen2);
+            int closeParen3 = markdown.indexOf(")", OpenParen3);
+            int OpenParen4 = markdown.indexOf("(", closeParen3);
+            int closeParen4 = markdown.indexOf(")", OpenParen4);
+            toReturn.add(markdown.substring(OpenParen2 + 1, closeParen2) + " , " + markdown.substring(OpenParen4 + 1, closeParen4));
+            currentIndex = closeParen4 + 1;
             if (currentIndex == markdown.length()-1) {
                 break;
             }
