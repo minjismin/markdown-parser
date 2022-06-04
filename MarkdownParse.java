@@ -1,11 +1,8 @@
 //https://howtodoinjava.com/java/io/java-read-file-to-string-examples/
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-// import static org.junit.Assert.*;
-// import org.junit.*;
 
 public class MarkdownParse {
 
@@ -13,16 +10,24 @@ public class MarkdownParse {
         ArrayList<String> toReturn = new ArrayList<>();
         // find the next [, then find the ], then find the (, then read link upto next )
         int currentIndex = 0;
-        while(currentIndex < markdown.length()) {
-            int openParen1 = markdown.indexOf("[", currentIndex);
-            int closeParen1 = markdown.indexOf("]", openParen1);
-            int OpenParen2 = markdown.indexOf("(", closeParen1);
-            int closeParen2 = markdown.indexOf(")", OpenParen2);
-            toReturn.add(markdown.substring(OpenParen2 + 1, closeParen2));
-            currentIndex = closeParen2 + 1;
-            if (currentIndex == markdown.length()-1) {
-                break;
+        while (currentIndex < markdown.length()) {
+            int exclamationMark = markdown.indexOf("!", currentIndex);
+            int openBracket = markdown.indexOf("[", currentIndex);
+            // Checking if there is an exclamation mark, which are for images.
+            if (!(exclamationMark == -1) && ((exclamationMark + 1) == openBracket)) {
+                currentIndex = openBracket + 1;
+                continue;
             }
+            int closeBracket = markdown.indexOf("]", openBracket);
+            int openParen = markdown.indexOf("(", closeBracket);
+            int closeParen = markdown.indexOf(")", openParen);
+            // Breaks the loop if we cannot find any of the
+            // syntax for the links.
+            if (openBracket == -1 || closeBracket == -1 || openParen == -1 ||
+            closeParen == -1) break;
+            // Get the link and add it to the list.
+            toReturn.add(markdown.substring(openParen + 1, closeParen).trim());
+            currentIndex = closeParen + 1;
         }
 
         return toReturn;
@@ -36,5 +41,3 @@ public class MarkdownParse {
 	    System.out.println(links);
     }
 }
-
-
